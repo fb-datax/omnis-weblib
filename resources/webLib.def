@@ -1,0 +1,4 @@
+LIBRARY         GENERIC
+EXPORTS
+    GenericWndProc  @1
+ 

@@ -1,21 +1,63 @@
+# Build Directory
+build
+
+*.pbxuser
+*.mode1v3
+*.user
+
+# Mac OS
+.DS_Store
+
 # Compiled Object files
 *.slo
 *.lo
 *.o
+*.exp
 *.obj
+*.res
+*.dep
+*.idb
+*.pdb
+*.manifest
+*.pdb
+*.res
+*.aps
+*.ncb
 
 # Compiled Dynamic libraries
 *.so
-*.dylib
-*.dll
+*.xcomp
+*.u_xcomp
 
 # Compiled Static libraries
 *.lai
 *.la
 *.a
-*.lib
 
-# Executables
-*.exe
-*.out
-*.app
+
+# Files
+!.gitkeep
+/tools/debug.log
+/deploy/bin/ext/awesomium.dll
+/deploy/bin/ext/web/browser/system/*
+/deploy/bin/xcomp/awesomium.dll
+!/deploy/bin/ext/web/browser/system/.gitkeep
+
+# Awesomium 
+/include/lib/awesomium.lib
+/include/awesomium/*
+!/include/awesomium/.gitkeep
+/src/method_dispatcher.h
+/src/js_delegate.h
+/src/method_dispatcher.cpp
+
+/tools/awesomium.dll
+/tools/awesomium_pak_utility.exe
+!/tools/.gitkeep
+
+# Omnis
+/include/omnis/*
+!/include/omnis/.gitkeep
+/include/lib/omnis.lib
+/lbs/temp
+/lbs/user

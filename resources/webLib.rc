@@ -1,0 +1,199 @@
+
+1   BITMAP  DISCARDABLE     "webLib.bmp"
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+	
+	// Name der CompLib
+	1000					"Web-Library"
+
+	// Namen der Controls
+	2000					"WebView"
+		 
+	////////// BROWSER ///////////////////
+
+	// Properties 
+	4000					"$basePath:Basepath for Plugins, ..."
+	4001					"$userPath:path for User settings,..."
+	
+	// Namen der Static Methoden 
+	
+	// Namen der Obj Methoden 
+	7000					"$navigateToUrl:$navigateToUrl(cURL)"
+	7001					"$historyBack:$historyBack()"
+	7002					"$historyForward:$historyForward()"
+	7003					"$initWebView:$initWebView()"
+	7004					"$focusWebView:$focusWebView()"
+	7005					"$unFocusWebView:$unFocusWebView()"
+	7006					"$shutDownWebView:$shutDownWebView()"
+	7007					"$cancelDownload:$cancelDownload()"
+	7008					"$startDownload:$startDownload()"
+	7009					"$getCompData:$getCompData(pCompIdent)"
+	7010					"$setCompData:$setCompData(pCompIdent,pData)"
+	7011					"$isCompValid:$isCompValid(pCompIdent)"
+	7012					"$getCompVersion:$getCompVersion(pCompIdent)"
+	7013					"$getCompApiVersion:$getCompApiVersion(pCompIdent)"
+	7014					"$sentCompAction:$sentCompAction(pCompIdent,pTyp,pParam1,pParam2,pParam3,pParam4,pParam5,pParam6,pParam7,pParam8,pParam9)"
+	
+	// Events
+	7500					"CloseModule:CloseModule"
+	
+	7502					"ShowMsg:ShowMsg"
+	7503					"ConsoleMessage:ConsoleMessage"
+	7504					"DocumentReady:DocumentReady"
+	7505					"FrameLoadingFailed:FrameLoadingFailed"
+	7506					"TitelChanged:TitelChanged"
+	7507					"AdressBarChanged:AdressBarChanged"
+	7508					"OpenNewWindow:OpenNewWindow"
+	7509					"DownloadRequest:DownloadRequest"
+	7510					"DownloadUpdate:DownloadUpdate"
+	7511					"DownloadFinished:DownloadFinished"
+	
+	7513					"JsInitFailed:JsInitFailed"
+	7514					"CompCustAction:CompCustAction"
+	7515					"CompInit:CompInit"
+
+	// Beschreibung der Parameter 
+	8000					"cURL:URL die geladen werden soll"
+	8001					"cBasePath:basispfad fuer Einstellungen, Session, Cache, Plugins,..."
+	8002					"cWhat:art des Events"
+	8004					"cURL:URL 2 die geladen werden soll"
+
+	// Event Parsameter ohne Woert 
+	8100					"consoleMessage:Console Msg"
+	8101					"url:Url"
+	8102					"scheme:Scheme"
+	8103					"host:Host"
+	8104					"port:Port"
+	8105					"path:Path"
+	8106					"query:Query"
+	8107					"anchor:Anchor"
+	8108					"filename:Filename"
+
+	8120					"errorCode:ErrorCode"
+	8121					"errorMsg:ErrorMsg"
+	8122					"url:Url"
+	
+	8130					"newTitel:NewTitel"
+
+	8140					"newUrl:NewUrl"
+
+	8150					"consoleMessage:ConsoleMessage"
+	8151					"lineNumber:LineNumber"
+	8152					"source:Source"
+
+	8160					"url:Url"
+	8161					"target:Target"
+
+	8170					"downloadId:DownloadId"
+	8171					"url:Url"
+	8172					"suggestedFileName:SuggestedFileName"
+	8173					"mimeType:MimeType"
+
+
+	8180					"downloadId:DownloadId"
+
+	8190					"downloadId:DownloadId"
+	8191					"filePath:FilePath"
+
+	8200					"downloadId:DownloadId"
+	8201					"totalBytes:TotalBytes"
+	8202					"receivedBytes:ReceivedBytes"
+	8203					"currentSpeed:CurrentSpeed"
+
+	8210					"downloadId:DownloadId"
+	8211					"url:Url"
+	8212					"savedFilePath:SavedFilePath"
+
+	8220					"type:Type"
+	8221					"param1:Param1"
+	8222					"param2:Param2"
+	8223					"param3:Param3"
+
+
+	8240					"type:Type"
+	8241					"param1:Param1"
+	8242					"param2:Param2"
+	8243					"param3:Param3"
+	8244					"param4:Param4"
+	8245					"param5:Param5"
+	8246					"param6:Param6"
+	8247					"param7:Param7"
+	8248					"param8:Param8"
+	8249					"param9:Param9"
+	8250					"param10:Param10"
+	8251					"param11:Param11"
+	8252					"param12:Param12"
+	8253					"param13:Param13"
+	8254					"param14:Param14"
+	8255					"param15:Param15"
+	8256					"param16:Param16"
+	8257					"param17:Param17"
+	8258					"param18:Param18"
+	8259					"param19:Param19"
+	8260					"param20:Param20"
+
+
+	8280					"type:Type"
+	8281					"param1:Param1"
+	8282					"param2:Param2"
+	8283					"param3:Param3"
+	8284					"param4:Param4"
+	8285					"param5:Param5"
+	8286					"param6:Param6"
+	8287					"param7:Param7"
+	8288					"param8:Param8"
+	8289					"param9:Param9"
+	8290					"param10:Param10"
+	8291					"param11:Param11"
+	8292					"param12:Param12"
+	8293					"param13:Param13"
+	8294					"param14:Param14"
+	8295					"param15:Param15"
+	8296					"param16:Param16"
+	8297					"param17:Param17"
+	8298					"param18:Param18"
+	
+
+	8300					"pCompId:CompId"
+
+	8310					"pCompId:CompId"
+	8311					"pCompData:CompData"
+
+	8320					"pCompId:CompId"
+
+	8330					"pCompId:CompId"
+
+	8340					"pCompId:CompId"
+	
+	8350					"compId:compId"
+	8351					"type:Type"
+	8352					"param1:Param1"
+	8353					"param2:Param2"
+	8354					"param3:Param3"
+	8355					"param4:Param4"
+	8356					"param5:Param5"
+	8357					"param6:Param6"
+	8358					"param7:Param7"
+	8359					"param8:Param8"
+	8360					"param9:Param9"
+
+	8370					"compId:compId"
+	8371					"type:Type"
+	8372					"param1:Param1"
+	8373					"param2:Param2"
+	8374					"param3:Param3"
+	8375					"param4:Param4"
+	8376					"param5:Param5"
+	8377					"param6:Param6"
+	8378					"param7:Param7"
+	8379					"param8:Param8"
+	8380					"param9:Param9"
+
+	8390					"compId:compId"
+
+	// Name der EintiegsMethode
+	31000					"GenericWndProc"
+END
+
+

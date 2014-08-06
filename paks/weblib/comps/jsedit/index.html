@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<style type="text/css">
+		body {
+	        overflow: hidden;
+	    }
+	    
+	    #editor { 
+	        margin: 0;
+	        position: absolute;
+	        top: 0;
+	        bottom: 0;
+	        left: 0;
+	        right: 0;
+	    }
+	</style>
+	<script type="text/javascript" src="../base/weblib-comps-abstract.js"></script>
+	<script type="text/javascript" src="weblib-comps-jsedit.js"></script>
+	<script type="text/javascript" src="../../assets/js/ace/ace.js"></script>
+</head>
+<body>
+	<pre id="editor">
+	</pre>
+	<script>
+		var editor = ace.edit("editor");
+		editor.setTheme("ace/theme/chrome");
+		editor.getSession().setMode("ace/mode/javascript");
+		weblibcomps.jsedit.init();
+	</script>
+</body>
+</html>
+

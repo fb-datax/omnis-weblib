@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="deploy-rls" name="Create Rls">
+	
+	<property name="workspace" value="${basedir}" />
+	<property name="project.name" value="BRW" />
+	<property name="project.include" value="${basedir}/deploy/" />
+	<property name="src.dir" value="${workspace}/build/release" />
+	<property name="debug.dir" value="${workspace}/build/debug" />
+	
+	<target name="version">
+		<buildnumber />
+		<tstamp>
+			<format property="build.date" pattern="dd.MM.yyyy" locale="de,DE"/>
+			<format property="build.time" pattern="HH:mm:ss" locale="de,DE"/>
+		</tstamp>
+	</target>
+	
+	<target name="deploy-rls" depends="version">
+		<property name="project.version" value="0.0.1" />
+		<antcall target="deploy"></antcall>
+	</target>
+	
+	<target name="deploy-snapshot" depends="version">
+		<property name="project.version" value="0.0.0-SNAPSHOT" />
+		<antcall target="deploy"></antcall>
+	</target>
+	
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="deploy" depends="version">
+    	<property name="project.base.dir" value="${workspace}/build/dist/${project.name}/v${project.version}/" />
+    	<property name="project.rls.dir" value="${project.base.dir}/bin/" />
+    	<property name="project.inst.dir" value="${project.base.dir}/install/" />
+    	<property name="project.paks.dir" value="${workspace}/build/paks" />
+    	
+    	<delete dir="${project.rls.dir}"/>
+    	<delete dir="${project.base.dir}"/>
+    	<delete dir="${project.paks.dir}"/>
+    			
+		<mkdir dir="${project.base.dir}/"/>
+    	<mkdir dir="${project.rls.dir}/"/>
+    	<mkdir dir="${project.paks.dir}/"/>
+    	
+    	
+		<property name="full.version" value="${project.version} - Build ${build.number}"/>
+		<echo>${full.version}</echo>
+		<echo>Tag me as: ${project.version}.${build.number}</echo>
+       	
+       	<!-- Copy Files From Include 2 Rls Dir -->
+    	<copy todir="${project.base.dir}">
+			<fileset dir="${project.include}">
+				<include name="**"/>
+				<exclude name="**/*.deploy.*"/>
+				<exclude name="**/*.exclude.*"/>
+				<exclude name="**/*.svn"/>
+				<exclude name="**/*.gitkeep"/>
+			</fileset>	
+		</copy>
+    	
+    	<!-- Copy Monitor 2 Rls Dir -->
+    	<copy todir="${project.rls.dir}/xcomp">
+			<fileset dir="${src.dir}">
+				<include name="webLib.dll"/>
+			</fileset>	
+		</copy>
+
+		<copy file="${debug.dir}/webLib.dll" tofile="${project.rls.dir}/xcomp/webLib.dll.debug"/>
+		<copy file="${debug.dir}/webLib.pdb" tofile="${project.rls.dir}/xcomp/webLib.pdb.debug"/>
+    	
+    	<!-- Erzeuge Pak Dateien -->
+    	<exec executable="cmd">
+    	   	<arg value="/c"/>
+    	   	<arg value="${workspace}/tools/awesomium_pak_utility"/>
+    	   	<arg value="dorg"/>
+    		<arg value="paks/dorg"/>
+    		<arg value="${project.paks.dir}"/>
+    	</exec>
+
+
+
+    	 <!-- Copy Pak Files 2 Rls Dir -->
+    	<copy todir="${project.rls.dir}/dorgext/web/browser/paks">
+			<fileset dir="${project.paks.dir}">
+				<include name="**"/>
+				<exclude name="**/*.gitkeep"/>
+			</fileset>	
+		</copy>
+    	
+		<!-- copy resources from src to bin -->
+		<echo>Prep README</echo>
+    	<replace dir="${project.base.dir}" token="@fullversion@" value="${full.version}">
+    		<include name="**/*.md"/>
+    	</replace>
+    	<replace dir="${project.base.dir}" token="@version@" value="${project.version}">
+    		<include name="**/*.md"/>
+    	</replace>
+    	<replace dir="${project.base.dir}" token="@buildNumber@" value="${build.number}">
+    		<include name="**/*.md"/>
+    	</replace>
+    	<replace dir="${project.base.dir}" token="@buildDate@" value="${build.date}">
+    		<include name="**/*.md"/>
+		</replace>
+		<replace dir="${project.base.dir}" token="@buildTime@" value="${build.time}">
+			<include name="**/*.md"/>
+		</replace>
+    	
+    	<echo>Tag me as: ${project.version}.${build.number}</echo>
+    </target>
+</project>
