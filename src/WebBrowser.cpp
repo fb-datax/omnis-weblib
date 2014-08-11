@@ -183,7 +183,7 @@ qlong WebBrowser::initWebView()
 			Awesomium::WebString _sessionPath = Awesomium::ToWebString(mUserPath);
 			_sessionPath.Append(Awesomium::WSLit(""));
 			
-			if (mUserPath.length() == 0) {
+			if (mUserPath.length() > 0) {
 				// Persitent
 				OmnisTools::logToTrace("persitent-session");
 				mWebSession = mWebCore->CreateWebSession(_sessionPath, prefs);
