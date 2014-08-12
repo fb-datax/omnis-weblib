@@ -54,7 +54,7 @@ WebBrowser::WebBrowser(HWND pHWnd, Awesomium::WebSession* pWebSession)
 WebBrowser::~WebBrowser()
 {	
 
-	OmnisTools::logToTrace(str255("destruct()"));
+	OmnisTools::logToTrace("destruct()");
 
 	// Cleanup
 	if (mWndTimerSet){
@@ -110,20 +110,17 @@ Awesomium::WebSession* WebBrowser::getWebSession(){
 
 qlong WebBrowser::initWebView()
 {
-	OmnisTools::logToTrace(str255("initWebView()"));
+	OmnisTools::logToTrace("initWebView()");
 	
 	// Prüfen ob der WebCore bereits initialisiert wurde
 	mWebCore = Awesomium::WebCore::instance();
 	if (!mWebCore){
-		OmnisTools::logToTrace(str255("Webcore intializing"));
-		
-		qchar* cUserPath = mUserPath.cString();
-		qchar* cBasePath = mBasePath.cString();
-			
+		OmnisTools::logToTrace("Webcore intializing");
+				
 		// Setup path Vars
-		Awesomium::WebString _logfile		=	Awesomium::WSLit((const char*) cUserPath);
-		Awesomium::WebString _pluginPath	=	Awesomium::WSLit((const char*) cBasePath);
-		Awesomium::WebString _sysPath		=	Awesomium::WSLit((const char*) cBasePath);
+		Awesomium::WebString _logfile		=	Awesomium::ToWebString(mUserPath);
+		Awesomium::WebString _pluginPath	=	Awesomium::ToWebString(mBasePath);
+		Awesomium::WebString _sysPath		=	Awesomium::ToWebString(mBasePath);
 			
 		_logfile.Append(Awesomium::WSLit("\\debug.log"));
 		_pluginPath.Append(Awesomium::WSLit("plugins\\"));
@@ -179,23 +176,21 @@ qlong WebBrowser::initWebView()
 
 			prefs.accept_language = Awesomium::WSLit("de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4");
 			prefs.default_encoding = Awesomium::WSLit("UTF-8");
-			qchar* cUserPath = mUserPath.cString();
 
-			Awesomium::WebString _sessionPath	=	Awesomium::WSLit((const char*) cUserPath);
+			Awesomium::WebString _sessionPath = Awesomium::ToWebString(mUserPath);
 			_sessionPath.Append(Awesomium::WSLit(""));
 			
-			if (cUserPath) {
+			if (mUserPath.length() > 0) {
 				// Persitent
-				OmnisTools::logToTrace(str255("persitent-session"));
+				OmnisTools::logToTrace("persitent-session");
 				mWebSession = mWebCore->CreateWebSession(_sessionPath, prefs);
 			}else {
 				// In memory
-				OmnisTools::logToTrace(str255("in-memory-session"));
+				OmnisTools::logToTrace("in-memory-session");
 				mWebSession = mWebCore->CreateWebSession(Awesomium::WSLit(""), prefs);
 			}
 
-			qchar* cBasePath = mBasePath.cString();
-			Awesomium::WebString _pakPath = Awesomium::WSLit((const char*) cBasePath);
+			Awesomium::WebString _pakPath = Awesomium::ToWebString(mBasePath);
 			_pakPath.Append(Awesomium::WSLit("paks\\weblib.pak"));
 
 			Awesomium::DataSource* data_source = new Awesomium::DataPakSource(_pakPath);
@@ -255,8 +250,8 @@ void WebBrowser::setupWebView(){
 
 		mMethodDispatcher.Bind(jsObj,Awesomium::WSLit("doCompInit"),JSDelegate(this, &WebBrowser::jsDoCompInit));
 		
-		jsObj.SetProperty(Awesomium::WSLit("basePath"),OmnisTools::getWebStringFromStr255(mBasePath));
-		jsObj.SetProperty(Awesomium::WSLit("userPath"),OmnisTools::getWebStringFromStr255(mUserPath));
+		jsObj.SetProperty(Awesomium::WSLit("basePath"), Awesomium::ToWebString(mBasePath));
+		jsObj.SetProperty(Awesomium::WSLit("userPath"), Awesomium::ToWebString(mUserPath));
 		
 	} else {
 		// Event evOnJsInitFailed occurred. Send event to OMNIS 
@@ -536,7 +531,7 @@ qlong WebBrowser::startDownload(int downloadId,std::string downloadPath){
 qlong WebBrowser::shutDownWebView() {
 	int result = 0;
 	
-	OmnisTools::logToTrace(str255("shutDown WebView()"));
+	OmnisTools::logToTrace("shutDown WebView()");
 	
 	if (mWebView) {
 		mWebView->Stop();
@@ -634,12 +629,12 @@ qlong WebBrowser::attributeSupport( LPARAM pMessage, WPARAM wParam, LPARAM lPara
 				{  
 					case pBasePath:
 					{
-						mBasePath = (str255)fval.getChar();						                                
+						mBasePath = OmnisTools::getStringFromEXTFldVal(fval);						                                
 						break;
 					}  
 					case pUserPath:
 					{
-						mUserPath = (str255)fval.getChar();						                                
+						mUserPath = OmnisTools::getStringFromEXTFldVal(fval);						                                
 						break;
 					}  
 				}   
@@ -655,13 +650,13 @@ qlong WebBrowser::attributeSupport( LPARAM pMessage, WPARAM wParam, LPARAM lPara
 			{    
 				// we are setting our color property
 				case pBasePath:
-				{
-					fval.setChar((str255) mBasePath);          
+				{ 
+					OmnisTools::getEXTFldValFromString(fval, mBasePath);
 					break;
 				}   
 				case pUserPath:
 				{
-					fval.setChar((str255) mUserPath);          
+					OmnisTools::getEXTFldValFromString(fval, mUserPath);
 					break;
 				} 
 			}

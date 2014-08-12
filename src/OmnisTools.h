@@ -59,7 +59,6 @@ namespace OmnisTools {
 	
 	Awesomium::WebString getWebStringFromEXTFldVal(EXTfldval& fVal);
 	Awesomium::WebString getWebStringFromStr(std::string& value);
-	Awesomium::WebString getWebStringFromStr255(str255& value);
 	std::string getStringFromWebString(const Awesomium::WebString& value);
 	
 	int getIntFromEXTFldVal(EXTfldval& fVal);
@@ -70,10 +69,11 @@ namespace OmnisTools {
 	void getEXTFldValFromInt64(EXTfldval& fVal, int64);
 	void getEXTFldValFromBool(EXTfldval& fVal, bool b);
 	
+	str255 initStr255(const char*);
 
 	// Allg Helpers
 	qchar* getQCharFromString( const std::string readString, qlong &retLength );
-	void logToTrace(str255 msg);
+	void logToTrace(const char* msg);
 }
 
 #endif // OMNIS_TOOLS_HE_

@@ -43,34 +43,37 @@
 #include <vector>
 
 
+// Set an existing EXTfldval object from a std::string
+#ifdef isunicode
+qchar* OmnisTools::getQCharFromString(const std::string readString, qlong &retLength) {
+	qlong length = readString.size();
+	
+	// Cast-away constness of c_str() pointer 
+	char* cString = const_cast<char*>(readString.c_str());
+	
+	// Feed into raw byte data
+	qbyte* utf8data = reinterpret_cast<qbyte*> (cString);
+	
+	// Allocate new qchar* string
+	qchar* omnisString = new qchar[length];
+	
+	// Convert to Omnis Character field
+	retLength = CHRunicode::utf8ToChar(utf8data, length, omnisString);  // Convert characters into Omnis Char Field
+	
+	return omnisString;
+}
 
 // Set an existing EXTfldval object from a std::string
 void OmnisTools::getEXTFldValFromString(EXTfldval& fVal, const std::string readString) {
+	qlong length;
+	qchar* omnisString = getQCharFromString(readString, length);
 	
-	qlong length = readString.size();
-	qoschar* cString = const_cast<qoschar*>(readString.c_str());
-	qoschar* utf8data = reinterpret_cast<qoschar*>(cString);
-	CHRconvFromOs test(utf8data,length);
-	qchar* qcharData = new qchar[length+1];
-	OMstrcpy(qcharData, test.dataPtr());
-	fVal.setChar(qcharData, length); // Set value of character field, but exclude the last character since it will be the null terminator from the C String
+	fVal.setChar(omnisString, length); // Set value of character field, but exclude the last character since it will be the null terminator from the C String
 	
 	// Clean-up
-	delete [] qcharData;
-
+	delete [] omnisString;
 }
-
-// Set an existing EXTfldval object from a std::wstring
-void OmnisTools::getEXTFldValFromChar(EXTfldval& fVal, const char* readChar) {
-    std::string readString;
-    if (readChar)
-        readString = readChar;
-    else
-        readString = "";
-    
-    getEXTFldValFromString(fVal, readString);
-}
-
+#else
 // Get a dynamically allocated qchar* array from a std::string
 qchar* OmnisTools::getQCharFromString(const std::string readString, qlong &retLength) {
 
@@ -85,10 +88,59 @@ qchar* OmnisTools::getQCharFromString(const std::string readString, qlong &retLe
 	return qcharData;
 }
 
+void OmnisTools::getEXTFldValFromString(EXTfldval& fVal, const std::string readString) {
+	
+	qlong length = readString.size();
+	qoschar* cString = const_cast<qoschar*>(readString.c_str());
+	qoschar* utf8data = reinterpret_cast<qoschar*>(cString);
+	CHRconvFromOs test(utf8data,length);
+	qchar* qcharData = new qchar[length+1];
+	OMstrcpy(qcharData, test.dataPtr());
+	fVal.setChar(qcharData, length); // Set value of character field, but exclude the last character since it will be the null terminator from the C String
+	
+	// Clean-up
+	delete [] qcharData;
+}
+#endif
 
-
+// Set an existing EXTfldval object from a std::wstring
+void OmnisTools::getEXTFldValFromChar(EXTfldval& fVal, const char* readChar) {
+    std::string readString;
+    if (readChar)
+        readString = readChar;
+    else
+        readString = "";
+    
+    getEXTFldValFromString(fVal, readString);
+}
 
 // Get a std::string from an EXTfldval object
+#ifdef isunicode
+std::string OmnisTools::getStringFromEXTFldVal(EXTfldval& fVal) {
+	std::string retString;
+	
+	// Get a qchar* string
+	qlong maxLength = fVal.getBinLen()+1; // Use binary length as approximation of maximum size
+	qlong length = 0, stringLength = 0;
+	qchar* omnisString = new qchar[maxLength];
+	fVal.getChar(maxLength, omnisString, length);
+	
+	// Translate qchar* string into UTF8 binary
+	qbyte* utf8data = reinterpret_cast<qbyte*>(omnisString);
+	stringLength = CHRunicode::charToUtf8(omnisString, length, utf8data);
+	
+	// Translate UTF8 binary into char* string
+	char* cString = reinterpret_cast<char*> (utf8data);
+	
+	// Create standard string
+	retString = std::string(cString,stringLength);
+	
+	// Clean-up
+	delete [] omnisString;
+	
+	return retString;
+}
+#else
 std::string OmnisTools::getStringFromEXTFldVal(EXTfldval& fVal) {
 	std::string retString;
 	
@@ -110,30 +162,24 @@ std::string OmnisTools::getStringFromEXTFldVal(EXTfldval& fVal) {
 	
 	return retString;
 }
+#endif
+
 
 // Get a std::string from an EXTfldval object
 Awesomium::WebString OmnisTools::getWebStringFromEXTFldVal(EXTfldval& fVal) {
-		std::string retString;
-	
-	// Get a qchar* string
-	qlong maxLength = fVal.getBinLen() + 5; // Use binary length as approximation of maximum size
-	qlong length = 0, stringLength = 0;
-	qchar* omnisString = new qchar[maxLength];
-	fVal.getChar(maxLength, omnisString, length);
-	
-	qoschar* utf8data = reinterpret_cast<qoschar*>(omnisString);
-	stringLength = CHRconvToOs::convToOs(omnisString,length,utf8data);
-	char* cString = reinterpret_cast<char*> (utf8data);
-	
-	std::string input = std::string(cString,stringLength);
-    Awesomium::WebString webString = getWebStringFromStr(input);
-	// Clean-up
-	delete [] omnisString;
-	
+	std::string retString;
+	std::string input = getStringFromEXTFldVal(fVal);
+    Awesomium::WebString webString = getWebStringFromStr(input);	
 	return webString;
 }
 
 // Get a std::string from an EXTfldval object
+#ifdef isunicode
+Awesomium::WebString OmnisTools::getWebStringFromStr(std::string& value) {
+	Awesomium::WebString webString = Awesomium::ToWebString(value);	
+	return webString;
+}
+#else
 Awesomium::WebString OmnisTools::getWebStringFromStr(std::string& value) {
 	Awesomium::WebString webString;
 	if (value.length()<=0){
@@ -147,27 +193,15 @@ Awesomium::WebString OmnisTools::getWebStringFromStr(std::string& value) {
 	
 	return webString;
 }
+#endif
 
-// Get a std::string from an EXTfldval object
-Awesomium::WebString OmnisTools::getWebStringFromStr255(str255& value) {
-	
-	// Get a qchar* string
-	qlong maxLength = value.length() + 5;
-	qlong stringLength = 0;
-	qchar* omnisString = value.cString();
-	
-	qoschar* utf8data = reinterpret_cast<qoschar*>(omnisString);
-	stringLength = CHRconvToOs::convToOs(omnisString,maxLength,utf8data);
-	char* cString = reinterpret_cast<char*> (utf8data);
-	
-	std::string input = std::string(cString,stringLength);
-    Awesomium::WebString webString = getWebStringFromStr(input);
 
-	return webString;
+#ifdef isunicode
+std::string OmnisTools::getStringFromWebString(const Awesomium::WebString& value) {
+	std::string output = Awesomium::ToString(value);
+	return output;
 }
-
-
-// Get a std::string from an EXTfldval object
+#else
 std::string OmnisTools::getStringFromWebString(const Awesomium::WebString& value) {
 	std::string output;
 	std::string input = Awesomium::ToString(value);
@@ -179,6 +213,7 @@ std::string OmnisTools::getStringFromWebString(const Awesomium::WebString& value
 	}
     return output;
 }
+#endif
 
 
 // Return a C++ int from an EXTfldval
@@ -217,10 +252,26 @@ void OmnisTools::getEXTFldValFromInt64(EXTfldval& fVal, int64 i) {
 }
 
 
+// Get a str255 object for a character constant (No string if it doesn't correspond to the conditions)
+#ifdef isunicode
+str255 OmnisTools::initStr255(const char* in) {
+    str255 theString;
+    qshort length = strlen(in);
+    if (length > 0 && length <= 255) {
+        theString.setUtf8((qbyte*) in, strlen(in));
+    }
+    return theString;
+} 
+#else
+str255 OmnisTools::initStr255(const char* in) {    
+    return str255(in);
+} 
+#endif
 
-void OmnisTools::logToTrace(str255 msg)
+void OmnisTools::logToTrace(const char* msg)
 {
 	#if defined(IS_DEBUG)
-		ECOaddTraceLine(&msg);
+		str255 logString = initStr255(msg);
+		ECOaddTraceLine(&logString);
 	#endif
 }

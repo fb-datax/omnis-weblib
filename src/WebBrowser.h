@@ -103,8 +103,8 @@ namespace WebLib {
 			qbool					mInitCompleted;
 
 			// Omnis Props 
-			str255					mBasePath;
-			str255					mUserPath;
+			std::string					mBasePath;
+			std::string					mUserPath;
 			
 			// Window Proc 
 			qbool					mWndTimerSet;
@@ -164,7 +164,7 @@ namespace WebLib {
 			
 			// Methoden Helper Methoden
 			static		WebBrowser  *objectFromHwnd(HWND pHwnd, EXTCompInfo *eci);	
-			static		void logToTrace(str255 msg);	
+			static		void logToTrace(const char* msg);	
 	};
 	
 }  // namespace WebLib

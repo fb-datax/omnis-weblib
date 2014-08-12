@@ -5,20 +5,26 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "webLib", "webLib.vcproj", "
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug - Unicode|Win32 = Debug - Unicode|Win32
 		Debug|Win32 = Debug|Win32
+		Release - Unicode|Win32 = Release - Unicode|Win32
 		Release|Win32 = Release|Win32
 		UNICODE Debug|Win32 = UNICODE Debug|Win32
 		UNICODE Release|Win32 = UNICODE Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Debug|Win32.ActiveCfg = Debug|Win32
-		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Debug|Win32.Build.0 = Debug|Win32
-		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Release|Win32.ActiveCfg = Release|Win32
-		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Release|Win32.Build.0 = Release|Win32
-		{CF830BCD-9C8A-428E-8086-D8F46F247131}.UNICODE Debug|Win32.ActiveCfg = Debug|Win32
-		{CF830BCD-9C8A-428E-8086-D8F46F247131}.UNICODE Debug|Win32.Build.0 = Debug|Win32
-		{CF830BCD-9C8A-428E-8086-D8F46F247131}.UNICODE Release|Win32.ActiveCfg = Release|Win32
-		{CF830BCD-9C8A-428E-8086-D8F46F247131}.UNICODE Release|Win32.Build.0 = Release|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Debug - Unicode|Win32.ActiveCfg = Debug - Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Debug - Unicode|Win32.Build.0 = Debug - Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Debug|Win32.ActiveCfg = Release - Non-Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Debug|Win32.Build.0 = Release - Non-Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Release - Unicode|Win32.ActiveCfg = Release - Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Release - Unicode|Win32.Build.0 = Release - Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Release|Win32.ActiveCfg = Release - Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.Release|Win32.Build.0 = Release - Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.UNICODE Debug|Win32.ActiveCfg = Release - Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.UNICODE Debug|Win32.Build.0 = Release - Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.UNICODE Release|Win32.ActiveCfg = Release - Unicode|Win32
+		{CF830BCD-9C8A-428E-8086-D8F46F247131}.UNICODE Release|Win32.Build.0 = Release - Unicode|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
