@@ -74,24 +74,21 @@ WebBrowser::~WebBrowser()
 // You need to paint your control
 qbool WebBrowser::paint()
 {
-
-	PAINTSTRUCT ps;
-	HDC hdc;
-	hdc = BeginPaint(mHWnd, &ps);
-
+	WNDpaintStruct ps;
+	WNDbeginPaint(mHWnd, &ps);
+    
 	if ( ECOisDesign(mHWnd) )
 	{
-		ECOdrawNumber(mHWnd,hdc);
-		ECOdrawMultiKnobs(mHWnd,hdc);
+		ECOdrawNumber(mHWnd, ps.hdc);
+		ECOdrawMultiKnobs(mHWnd, ps.hdc);
 	} else {
 		if (mWebView) {
 			qrect client;
 			WNDgetClientRect( mHWnd, &client );
 			mWebView->Resize(client.width(), client.height());
 		}
-		
 	}
-	EndPaint(mHWnd, &ps);
+	WNDendPaint(mHWnd, &ps);
 	return qtrue;
 }
 
